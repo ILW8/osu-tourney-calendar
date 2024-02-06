@@ -19,7 +19,7 @@ VERSION:2.0
 METHOD:PUBLISH
 PRODID:-//Apple Inc.//macOS 14.1.2//EN
 """
-
+    cutoff_threshold = datetime.datetime.now(tz=datetime.timezone.utc)
     for row in reader:
         if row[id_column] == "":
             break
@@ -28,6 +28,8 @@ PRODID:-//Apple Inc.//macOS 14.1.2//EN
 
         match_id = row[id_column]
         match_datetime = dateutil.parser.parse(date_time_str, fuzzy=True)
+        if match_datetime < cutoff_threshold:
+            continue
         print(f"{acronym}: {match_id}")
         ics_string += "BEGIN:VEVENT\n"
         ics_string += f"DTSTART:{match_datetime.strftime('%Y%m%dT%H%M%SZ')}\n"  # 20201124T123456Z
