@@ -30,7 +30,7 @@ PRODID:-//Apple Inc.//macOS 14.1.2//EN
         match_datetime = dateutil.parser.parse(date_time_str, fuzzy=True)
         if match_datetime < cutoff_threshold:
             continue
-        print(f"{acronym}: {match_id}")
+        print(f"{acronym}: {match_id} @ {match_datetime}")
         ics_string += "BEGIN:VEVENT\n"
         ics_string += f"DTSTART:{match_datetime.strftime('%Y%m%dT%H%M%SZ')}\n"  # 20201124T123456Z
         ics_string += f"DTEND:{(match_datetime + datetime.timedelta(hours=1)).strftime('%Y%m%dT%H%M%SZ')}\n"
@@ -45,7 +45,7 @@ PRODID:-//Apple Inc.//macOS 14.1.2//EN
         ics_string += "TRANSP:OPAQUE\n"
         ics_string += "END:VEVENT\n"
     ics_string += "END:VCALENDAR"
-    with open(f"{datetime.datetime.now(tz=datetime.timezone.utc).timestamp()}.ics", "w") as outfile:
+    with open(f"{acronym}_{datetime.datetime.now(tz=datetime.timezone.utc).timestamp()}.ics", "w") as outfile:
         outfile.write(ics_string)
 
 
